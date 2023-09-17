@@ -28,11 +28,10 @@ def add_department(session: Session):
         officeNum = int(input("Office number --> "))
         description = input("Description of department --> ")
 
-        abbr_count: int = session.query(Department).filter(Department.abbreviation == abbreviation).count()
-        chair_count: int = session.query(Department).filter(Department.chairName == chairName).count()
-        office_count: int = session.query(Department).filter(Department.building == building,
-                                                             Department.officeNum == officeNum).count()
-        desc_count: int = session.query(Department).filter(Department.description == description).count()
+        abbr_count = session.query(Department).filter(Department.abbreviation).count()
+        chair_count = session.query(Department).filter(Department.chairName).count()
+        office_count = session.query(Department).filter(Department.building, Department.officeNum).count()
+        desc_count = session.query(Department).filter(Department.description).count()
 
         unique_abbr = abbr_count == 0
         unique_chair = chair_count == 0
@@ -51,39 +50,38 @@ def add_department(session: Session):
     session.add(newDepartment)
 
 
-def list_departments(sess: Session):
-    deps: [Department] = list(sess.query(Department).order_by(Department.departmentName))
-    for department in deps:
-        print(department)
-
 def select_department_name(sess: Session) -> Department:
-    """
-    Lists all the departments sorted by department name and returns based on selected name
-    """
+	"""
+	Lists all of the departments sorted by department name and returns based on selected name
+	"""
+	
+	
+	departments: [Department] = list(sess.query(Department).order_by(Department.name))
+	
+	for department in departments:
+		print(department.str())
+	
+	found = False
 
-    list_departments(sess)
-
-    found = False
-
-    while not found:
-        selection = input("Enter the abbreviation for the department: ")
-        dep: int = sess.query(Department).filter(Department.abbreviation == selection).count()
-        found = dep == 1
-
-        if not found:
-            print("No department found with that abbreviation. Try again")
-
-        returned: Department = sess.query(Department).filter(Department.abbreviation == selection).first()
-
-    print("Department: ", returned)
-    return returned
+	while not found:
+		selection = input("Enter the abbreviation for the department: ")
+		dep: int = sess.query(Department).filter(Department.abbreviation == selection).count()
+		found = dep == 1
+		
+		if not found:
+			print("No department found with that abbreviation. Try again")
+		
+		returned = Department = sess.query(Department).filter(Department.abbreviation == selection)
+	
+	print("Department: ", returned)
+	return returned
 
 def delete_department(sess: Session):
-    """
-    Asks the user for a department by the abbreviation and deletes it
-    """
-    department: Department = select_department_name(sess)
-    sess.delete(department)
+	"""
+	Asks the user for a department by the abbreviation and deletes it
+	"""
+	department = select_department_name(sess)
+	sess.delete(department)
 
 
 
@@ -255,10 +253,10 @@ if __name__ == '__main__':
     # logging_action will be the text string name of the logging level, for instance 'logging.INFO'
     #logging_action = debug_select.menu_prompt()
     # eval will return the integer value of whichever logging level variable name the user selected.
-    #logging.getLogger("sqlalchemy.engine").setLevel(eval(logging_action))
+    logging.getLogger("sqlalchemy.engine").setLevel(eval(logging_action))
     # use the logging factory to create our second logger.
     # for more logging messages, set the level to logging.DEBUG.
-    #logging.getLogger("sqlalchemy.pool").setLevel(eval(logging_action))
+    logging.getLogger("sqlalchemy.pool").setLevel(eval(logging_action))
 
     metadata.drop_all(bind=engine)  # start with a clean slate while in development
 
@@ -267,20 +265,18 @@ if __name__ == '__main__':
 
     with Session() as sess:
         main_action: str = ''
-        run = True
+	run = True
         while run:
-            do = int(input("What do you want to do? \nAdd Department = 1 \nFind Department = 2\nDelete Deparment = 3 \nQuit = 4\n"))
-            if do == 1:
-                add_department(sess)
-            elif do == 2:
-                select_department_name(sess)
-            elif do == 3:
-                delete_department(sess)
-            elif do == 4:
-                break
-            else:
-                do = input("What do you want to do? \n Add Department = 1 \nfind Department = 2\ndelete Deparment = 3 \nquit = 4\n")
+	    do = input("What do you want to do? \n Add Department = 1 \nfind Department = 2\ndelete Deparment = 3 \nquit = 4\n")
+     	    if do == 1:
+	  	add_department()
+	    elif do ==2:
+     		find_department_name()
+       	    elif do == 3:
+	    	delete_department()
+      	    elif do == 4:
+	   	run = False
+     	    else:
+	  	do = input("What do you want to do? \n Add Department = 1 \nfind Department = 2\ndelete Deparment = 3 \nquit = 4\n")
         sess.commit()
     print('Ending normally')
-    #5gAg$v$H
-
