@@ -269,13 +269,13 @@ if __name__ == '__main__':
         while run:
 	    do = input("What do you want to do? \n Add Department = 1 \nfind Department = 2\ndelete Deparment = 3 \nquit = 4\n")
      	    if do == 1:
-	  	add_department()
+	  	add_department(sess)
 	    elif do ==2:
-     		find_department_name()
+     		select_department_name(sess)
        	    elif do == 3:
-	    	delete_department()
+	    	delete_department(sess)
       	    elif do == 4:
-	   	run = False
+	   	break
      	    else:
 	  	do = input("What do you want to do? \n Add Department = 1 \nfind Department = 2\ndelete Deparment = 3 \nquit = 4\n")
         sess.commit()
