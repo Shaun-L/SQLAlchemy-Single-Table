@@ -251,7 +251,7 @@ if __name__ == '__main__':
     # use the logging factory to create our first logger.
     # for more logging messages, set the level to logging.DEBUG.
     # logging_action will be the text string name of the logging level, for instance 'logging.INFO'
-    logging_action = debug_select.menu_prompt()
+    #logging_action = debug_select.menu_prompt()
     # eval will return the integer value of whichever logging level variable name the user selected.
     logging.getLogger("sqlalchemy.engine").setLevel(eval(logging_action))
     # use the logging factory to create our second logger.
@@ -265,9 +265,18 @@ if __name__ == '__main__':
 
     with Session() as sess:
         main_action: str = ''
-        while main_action != menu_main.last_action():
-            main_action = menu_main.menu_prompt()
-            print('next action: ', main_action)
-            exec(main_action)
+	run = True
+        while run:
+	    do = input("What do you want to do? \n Add Department = 1 \nfind Department = 2\ndelete Deparment = 3 \nquit = 4\n")
+     	    if do == 1:
+	  	add_department()
+	    elif do ==2:
+     		find_department_name()
+       	    elif do == 3:
+	    	delete_department()
+      	    elif do == 4:
+	   	run = False
+     	    else:
+	  	do = input("What do you want to do? \n Add Department = 1 \nfind Department = 2\ndelete Deparment = 3 \nquit = 4\n")
         sess.commit()
     print('Ending normally')
