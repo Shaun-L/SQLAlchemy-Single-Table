@@ -50,6 +50,32 @@ def add_department(session: Session):
     session.add(newDepartment)
 
 
+def select_department_name(sess: Session) -> Department:
+	"""
+	Lists all of the departments sorted by department name and returns based on selected name
+	"""
+	
+	
+	departments: [Department] = list(sess.query(Department).order_by(Department.name))
+	
+	for department in departments:
+		print(department.str())
+	
+	found = False
+
+	while not found:
+		selection = input("Enter the abbreviation for the department: ")
+		dep: int = sess.query(Department).filter(Department.abbreviation = selection).count()
+		found = dep == 1
+		
+		if not found:
+			print("No department found with that abbreviation. Try again")
+		
+		returned = Department = sess.query(Department).filter(Department.abbreviation = selection)
+	
+	print("Department: ", returned)
+	return returned
+
 
 def add_student(session: Session):
     """
