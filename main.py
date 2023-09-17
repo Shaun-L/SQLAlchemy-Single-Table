@@ -69,19 +69,17 @@ def list_departments(sess: Session):
     for i, department in enumerate(deps):
         print(f"{i+1}.{department.abbreviation} - {department.departmentName}")
 
-def select_department_name(sess: Session) -> Department:
+def select_department_abbreviation(sess: Session) -> Department:
     """
-        List all the departments, sorted by the abbreviations.
-        :param session: The connection to the database
-        :return:        Department
-    """
+	Lists all of the departments sorted by department name and returns based on selected abbreviation
+	"""
 
     list_departments(sess)
 
     found = False
 
     while not found:
-        selection = input("\nEnter the abbreviation for the department: ")
+        selection = input("Enter the abbreviation for the department: ")
         dep: int = sess.query(Department).filter(Department.abbreviation == selection).count()
         found = dep == 1
 
@@ -89,10 +87,110 @@ def select_department_name(sess: Session) -> Department:
             print("No department found with that abbreviation. Try again")
 
         returned = sess.query(Department).filter(Department.abbreviation == selection).first()
-    print(f"Department Information:\n{returned}")
 
     return returned
 
+def select_department_name(sess: Session) -> Department:
+    """
+	Lists all of the departments sorted by department name and returns based on selected name
+	"""
+
+    list_departments(sess)
+
+    found = False
+
+    while not found:
+        selection = input("Enter the name for the department: ")
+        dep: int = sess.query(Department).filter(Department.departmentName == selection).count()
+        found = dep == 1
+
+        if not found:
+            print("No department found with that name. Try again")
+
+        returned = sess.query(Department).filter(Department.departmentName == selection).first()
+
+    return returned
+
+def select_department_chair(sess: Session) -> Department:
+    """
+	Lists all of the departments sorted by department name and returns based on selected chair
+	"""
+
+    list_departments(sess)
+
+    found = False
+
+    while not found:
+        selection = input("Enter the Chair for the department: ")
+        dep: int = sess.query(Department).filter(Department.chairName == selection).count()
+        found = dep == 1
+
+        if not found:
+            print("No department found with that chair. Try again")
+
+        returned = sess.query(Department).filter(Department.chairName == selection).first()
+
+    return returned
+
+def select_department_building_office(sess: Session) -> Department:
+    """
+	Lists all of the departments sorted by department name and returns based on selected building/office
+	"""
+
+    list_departments(sess)
+
+    found = False
+
+    while not found:
+        building = input("Enter the building for the department: ")
+        office = int(input('Enter the office for the department: '))
+        dep: int = sess.query(Department).filter(Department.building == building, Department.officeNum == office).count()
+        found = dep == 1
+
+        if not found:
+            print("No department found with that building and office. Try again")
+
+        returned = sess.query(Department).filter(Department.building == building, Department.officeNum == office).first()
+
+    return returned
+
+def select_department_desc(sess: Session) -> Department:
+    """
+	Lists all of the departments sorted by department name and returns based on selected description
+	"""
+
+    list_departments(sess)
+
+    found = False
+
+    while not found:
+        selection = input("Enter the description for the department: ")
+        dep: int = sess.query(Department).filter(Department.description == selection).count()
+        found = dep == 1
+
+        if not found:
+            print("No department found with that description. Try again")
+
+        returned = sess.query(Department).filter(Department.description == selection).first()
+
+    return returned
+
+def select_department(sess: Session):
+	find_department = department_select.menu_prompt()
+	
+	if find_department == "Name":
+		dep = select_department_name(sess)
+	elif find_department == 'Abb':
+		dep = select_department_abbreviation(sess)
+	elif find_department == 'Chair':
+		dep = select_department_chair(sess)
+	elif find_department == 'Building/Office':
+		dep = select_department_building_office(sess)
+	elif find_department == 'Desctiption':
+		dep = select_department_desc(sess)
+	else:
+		dep = None
+	return dep
 
 def delete_department(sess: Session):
     """
@@ -285,21 +383,10 @@ if __name__ == '__main__':
 
     with Session() as sess:
         main_action: str = ''
-        run = True
-        while run:
-            do = int(input(
-                "\nWhat do you want to do? \n1. Add Department \n2. Find Department\n3. Delete Department\n4. Quit\n"
-            ))
-            if do == 1:
-                add_department(sess)
-            elif do == 2:
-                select_department_name(sess)
-            elif do == 3:
-                delete_department(sess)
-            elif do == 4:
-                run = False
-            else:
-                print("Invalid Selection. Try Again.\n")
+        while main_action != menu_main.last_action():
+            main_action = menu_main.menu_prompt()
+            print('next action: ', main_action)
+            exec(main_action)
         sess.commit()
     print('\nEnding normally')
 #5gAg$v$H
