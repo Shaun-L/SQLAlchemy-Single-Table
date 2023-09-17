@@ -76,6 +76,12 @@ def select_department_name(sess: Session) -> Department:
 	print("Department: ", returned)
 	return returned
 
+def delete_department(sess: Session):
+	"""
+	Asks the user for a department by the abbreviation and deletes it
+	"""
+	department = select_department_name(session)
+	session.delete(department)
 
 def add_student(session: Session):
     """
