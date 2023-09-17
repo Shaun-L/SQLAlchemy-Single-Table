@@ -4,8 +4,26 @@ from db_connection import engine, Session
 from orm_base import metadata
 
 from Student import Student
+from Department import Department
 from Option import Option
 from Menu import Menu
+
+def add_department(session: Session):
+    unique_abbr = False
+    unique_chair = False
+    unique_office = False
+    unique_desc = False
+    departmentName: str = ''
+    abbreviation: str = ''
+    chairName: str = ''
+    building: str = ''
+    officeNum: int = 0
+    description: str = ''
+
+
+
+
+
 
 
 def add_student(session: Session):
