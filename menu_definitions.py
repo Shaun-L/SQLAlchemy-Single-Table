@@ -14,7 +14,6 @@ menu_main = Menu('main', 'Please select one of the following options:', [
     Option("Select student from list", "select_student_from_list(sess)"),
     Option("Add department", "add_department(sess)"),
     Option("Delete department", "delete_department(sess)"),
-    Option("List all departments","list_departments(sess)"),
     Option("Select department", "select_department(sess)"),
     Option("Exit", "pass")
 ])

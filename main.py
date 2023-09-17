@@ -1,5 +1,5 @@
 import logging
-from menu_definitions import menu_main, student_select, debug_select
+from menu_definitions import menu_main, student_select, debug_select,department_select
 from db_connection import engine, Session
 from orm_base import metadata
 
@@ -176,21 +176,26 @@ def select_department_desc(sess: Session) -> Department:
     return returned
 
 def select_department(sess: Session):
-	find_department = department_select.menu_prompt()
-	
-	if find_department == "Name":
-		dep = select_department_name(sess)
-	elif find_department == 'Abb':
-		dep = select_department_abbreviation(sess)
-	elif find_department == 'Chair':
-		dep = select_department_chair(sess)
-	elif find_department == 'Building/Office':
-		dep = select_department_building_office(sess)
-	elif find_department == 'Desctiption':
-		dep = select_department_desc(sess)
-	else:
-		dep = None
-	return dep
+    find_department = department_select.menu_prompt()
+
+    if find_department == "Name":
+        dep = select_department_name(sess)
+        print(dep)
+    elif find_department == 'Abb':
+        dep = select_department_abbreviation(sess)
+        print(dep)
+    elif find_department == 'Chair':
+        dep = select_department_chair(sess)
+        print(dep)
+    elif find_department == 'Building/Office':
+        dep = select_department_building_office(sess)
+        print(dep)
+    elif find_department == 'Description':
+        dep = select_department_desc(sess)
+        print(dep)
+    else:
+        dep = None
+    return dep
 
 def delete_department(sess: Session):
     """
@@ -200,7 +205,7 @@ def delete_department(sess: Session):
         :return:        None
     """
 
-    department = select_department_name(sess)
+    department = select_department(sess)
     sess.delete(department)
 
 
@@ -390,3 +395,4 @@ if __name__ == '__main__':
         sess.commit()
     print('\nEnding normally')
 #5gAg$v$H
+#Carm3n1ta
