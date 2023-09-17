@@ -20,9 +20,34 @@ def add_department(session: Session):
     officeNum: int = 0
     description: str = ''
 
+    while not unique_abbr or not unique_chair or not unique_office or not unique_desc:
+        departmentName = input("Department name --> ")
+        abbreviation = input("Department's abbreviation --> ")
+        chairName = input("Department Chair name --> ")
+        building = input("Building name --> ")
+        officeNum = int(input("Office number --> "))
+        description = input("Description of department --> ")
 
+        abbr_count = session.query(Department).filter(Department.abbreviation).count()
+        chair_count = session.query(Department).filter(Department.chairName).count()
+        office_count = session.query(Department).filter(Department.building, Department.officeNum).count()
+        desc_count = session.query(Department).filter(Department.description).count()
 
+        unique_abbr = abbr_count == 0
+        unique_chair = chair_count == 0
+        unique_office = office_count == 0
+        unique_desc = desc_count == 0
 
+        if not unique_abbr:
+            print("We already have a department by that abbreviation. Try again.")
+        elif not unique_chair:
+            print("The named individual is already a chair of a different department. Try again.")
+        elif not unique_office:
+            print("That office room is already occupied by another department. Try again.")
+        elif not unique_desc:
+            print("That description matches the description of another department. Try again.")
+    newDepartment = Department(departmentName, abbreviation, chairName, building, officeNum, description)
+    session.add(newDepartment)
 
 
 
