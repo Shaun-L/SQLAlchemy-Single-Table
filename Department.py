@@ -26,5 +26,7 @@ UniqueConstraint("building","office", name = "departments_uk_03"), UniqueConstra
         self.description = description
 
     def __str__(self):
-        return ""
+        return f"Department Name: {self.departmentName}\nDepartment Abbreviation: {self.abbreviation}\n" \
+               f"Department Chair: {self.chairName}\nDepartment Office: {self.building} {self.officeNum}\n" \
+               f"Department Description: {self.description}"
 

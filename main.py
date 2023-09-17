@@ -65,13 +65,13 @@ def select_department_name(sess: Session) -> Department:
 
 	while not found:
 		selection = input("Enter the abbreviation for the department: ")
-		dep: int = sess.query(Department).filter(Department.abbreviation = selection).count()
+		dep: int = sess.query(Department).filter(Department.abbreviation == selection).count()
 		found = dep == 1
 		
 		if not found:
 			print("No department found with that abbreviation. Try again")
 		
-		returned = Department = sess.query(Department).filter(Department.abbreviation = selection)
+		returned = Department = sess.query(Department).filter(Department.abbreviation == selection)
 	
 	print("Department: ", returned)
 	return returned
@@ -80,8 +80,10 @@ def delete_department(sess: Session):
 	"""
 	Asks the user for a department by the abbreviation and deletes it
 	"""
-	department = select_department_name(session)
-	session.delete(department)
+	department = select_department_name(sess)
+	sess.delete(department)
+
+
 
 def add_student(session: Session):
     """
