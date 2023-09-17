@@ -7,7 +7,7 @@ class Department(Base):
     """Description: (incomplete)"""
 
     __tablename__ = "departments"
-    departmentName: Mapped[str] = mapped_column('name', String(50), nullable=False, primary_key=True)
+    departmentName: Mapped[str] = mapped_column('department_name', String(50), nullable=False, primary_key=True)
     abbreviation: Mapped[str] = mapped_column('abbreviation', String(6), nullable=False)
     chairName: Mapped[str] = mapped_column('chair_name', String(80), nullable=False)
     building: Mapped[str] = mapped_column('building', String(10), nullable=False)

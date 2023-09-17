@@ -10,6 +10,12 @@ from Menu import Menu
 
 
 def add_department(session: Session):
+    """
+        Prompt the user for the information for a new department and validate
+        the input to make sure that we do not create any duplicates.
+        :param session: The connection to the database.
+        :return:        None
+        """
     unique_abbr = False
     unique_chair = False
     unique_office = False
@@ -29,7 +35,7 @@ def add_department(session: Session):
         officeNum = int(input("Office number --> "))
         description = input("Description of department --> ")
 
-        abbr_count = session.query(Department).filter(Department.abbreviation == departmentName).count()
+        abbr_count = session.query(Department).filter(Department.abbreviation == abbreviation).count()
         chair_count = session.query(Department).filter(Department.chairName == chairName).count()
         office_count = session.query(Department).filter(Department.building == building,
                                                         Department.officeNum == officeNum).count()
@@ -52,21 +58,30 @@ def add_department(session: Session):
     session.add(newDepartment)
 
 def list_departments(sess: Session):
-    deps: [Department] = list(sess.query(Department).order_by(Department.departmentName))
-    for department in deps:
-        print(department)
+    """
+        List all the departments, sorted by the abbreviations.
+        :param session:
+        :return:
+        """
+
+    deps: [Department] = list(sess.query(Department).order_by(Department.abbreviation))
+    print("")
+    for i, department in enumerate(deps):
+        print(f"{i+1}.{department.abbreviation} - {department.departmentName}")
 
 def select_department_name(sess: Session) -> Department:
     """
-	Lists all of the departments sorted by department name and returns based on selected name
-	"""
+        List all the departments, sorted by the abbreviations.
+        :param session: The connection to the database
+        :return:        Department
+    """
 
     list_departments(sess)
 
     found = False
 
     while not found:
-        selection = input("Enter the abbreviation for the department: ")
+        selection = input("\nEnter the abbreviation for the department: ")
         dep: int = sess.query(Department).filter(Department.abbreviation == selection).count()
         found = dep == 1
 
@@ -74,14 +89,18 @@ def select_department_name(sess: Session) -> Department:
             print("No department found with that abbreviation. Try again")
 
         returned = sess.query(Department).filter(Department.abbreviation == selection).first()
+    print(f"Department Information:\n{returned}")
 
     return returned
 
 
 def delete_department(sess: Session):
     """
-	Asks the user for a department by the abbreviation and deletes it
-	"""
+        Prompt the user for a department by the abbreviation and delete that
+        department.
+        :param session: The connection to the database.
+        :return:        None
+    """
 
     department = select_department_name(sess)
     sess.delete(department)
@@ -247,8 +266,8 @@ def select_student_from_list(session):
 
 
 if __name__ == '__main__':
-    print('Starting off')
-    logging.basicConfig()
+    print('\nStarting off')
+    #logging.basicConfig()
     # use the logging factory to create our first logger.
     # for more logging messages, set the level to logging.DEBUG.
     # logging_action will be the text string name of the logging level, for instance 'logging.INFO'
@@ -269,7 +288,8 @@ if __name__ == '__main__':
         run = True
         while run:
             do = int(input(
-                "What do you want to do? \nAdd Department = 1 \nfind Department = 2\nDelete Deparment = 3 \nquit = 4\n"))
+                "\nWhat do you want to do? \n1. Add Department \n2. Find Department\n3. Delete Department\n4. Quit\n"
+            ))
             if do == 1:
                 add_department(sess)
             elif do == 2:
@@ -279,7 +299,7 @@ if __name__ == '__main__':
             elif do == 4:
                 run = False
             else:
-                print("Invalid Selection. Try Again.")
+                print("Invalid Selection. Try Again.\n")
         sess.commit()
-    print('Ending normally')
+    print('\nEnding normally')
 #5gAg$v$H
