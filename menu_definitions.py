@@ -12,6 +12,10 @@ menu_main = Menu('main', 'Please select one of the following options:', [
     Option("Delete student", "delete_student(sess)"),
     Option("List all students", "list_students(sess)"),
     Option("Select student from list", "select_student_from_list(sess)"),
+    Option("Add department", "add_department(sess)"),
+    Option("Delete department", "delete_department(sess)"),
+    Option("List all departments","list_departments(sess)"),
+    Option("Select department", "select_department(sess)"),
     Option("Exit", "pass")
 ])
 
@@ -21,6 +25,15 @@ student_select = Menu('student select', 'Please select how you want to select a 
     Option("ID", "ID"),
     Option("First and last name", "first/last name"),
     Option("Electronic mail", "email")
+])
+
+#A menu to select how the department will be found
+department_select = Menu('department select', 'How do you want to select a department:', [
+    Option('Name', 'Name'),
+    Option('Abbreviation','Abb'),
+    Option('Chair','Chair'),
+    Option('Building and office', 'Building/Office'),
+    Option('Description','Description')
 ])
 
 # A menu to prompt for the amount of logging information to go to the console.
