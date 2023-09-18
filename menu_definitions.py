@@ -28,7 +28,6 @@ student_select = Menu('student select', 'Please select how you want to select a 
 
 #A menu to select how the department will be found
 department_select = Menu('department select', 'How do you want to select a department:', [
-    Option('Name', 'Name'),
     Option('Abbreviation','Abb'),
     Option('Chair','Chair'),
     Option('Building and office', 'Building/Office'),

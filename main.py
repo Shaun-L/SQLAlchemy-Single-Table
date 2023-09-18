@@ -59,15 +59,15 @@ def add_department(session: Session):
 
 def list_departments(sess: Session):
     """
-        List all the departments, sorted by the abbreviations.
+        List all the departments, sorted by the Department Name.
         :param session:
         :return:
         """
 
-    deps: [Department] = list(sess.query(Department).order_by(Department.abbreviation))
+    deps: [Department] = list(sess.query(Department).order_by(Department.departmentName))
     print("")
     for i, department in enumerate(deps):
-        print(f"{i+1}.{department.abbreviation} - {department.departmentName}")
+        print(f"{i+1}. {department.departmentName}")
 
 def select_department_abbreviation(sess: Session) -> Department:
     """
@@ -90,26 +90,6 @@ def select_department_abbreviation(sess: Session) -> Department:
 
     return returned
 
-def select_department_name(sess: Session) -> Department:
-    """
-	Lists all of the departments sorted by department name and returns based on selected name
-	"""
-
-    list_departments(sess)
-
-    found = False
-
-    while not found:
-        selection = input("Enter the name for the department: ")
-        dep: int = sess.query(Department).filter(Department.departmentName == selection).count()
-        found = dep == 1
-
-        if not found:
-            print("No department found with that name. Try again")
-
-        returned = sess.query(Department).filter(Department.departmentName == selection).first()
-
-    return returned
 
 def select_department_chair(sess: Session) -> Department:
     """
@@ -178,21 +158,18 @@ def select_department_desc(sess: Session) -> Department:
 def select_department(sess: Session):
     find_department = department_select.menu_prompt()
 
-    if find_department == "Name":
-        dep = select_department_name(sess)
-        print(dep)
-    elif find_department == 'Abb':
+    if find_department == 'Abb':
         dep = select_department_abbreviation(sess)
-        print(dep)
+        print(f"\n{dep}\n")
     elif find_department == 'Chair':
         dep = select_department_chair(sess)
-        print(dep)
+        print(f"\n{dep}\n")
     elif find_department == 'Building/Office':
         dep = select_department_building_office(sess)
-        print(dep)
+        print(f"\n{dep}\n")
     elif find_department == 'Description':
         dep = select_department_desc(sess)
-        print(dep)
+        print(f"\n{dep}\n")
     else:
         dep = None
     return dep

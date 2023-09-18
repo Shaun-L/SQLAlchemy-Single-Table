@@ -4,9 +4,11 @@ from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
 class Department(Base):
-    """Description: (incomplete)"""
+    """A division of a large organization, in this case a university,
+     dealing with a specified area of study"""
 
     __tablename__ = "departments"
+
     departmentName: Mapped[str] = mapped_column('department_name', String(50), nullable=False, primary_key=True)
     abbreviation: Mapped[str] = mapped_column('abbreviation', String(6), nullable=False)
     chairName: Mapped[str] = mapped_column('chair_name', String(80), nullable=False)
